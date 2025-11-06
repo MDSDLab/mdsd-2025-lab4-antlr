@@ -1,0 +1,66 @@
+form personForm
+    input text fname "First name"
+    {
+        minlength(3) => "First name must be at least 3 characters long!"
+        maxlength(20) => "First name must be at most 20 characters long!"
+        pattern("[A-Z][a-z]*") => "First name must begin with a capital letter!"
+
+        //required => "First name is mandatory"
+        required => "Input %id% '%name%' of type %type% is mandatory!"  // BŐVÍTMÉNY
+
+        eq(lname + "ov") => "First name must be last name + ov!"     // BŐVÍTMÉNY
+
+        JS // BŐVÍTMÉNY
+        {
+            startsWith("A"); => "First name must start with 'A'!"
+            substring(1, 4) == "abc"; => "First name must contain 'abc' after the first character!"
+        }
+    }
+
+    input text lname "Last name"
+    {
+        minlength(3) => "Last name must be at least 3 characters long!"
+        maxlength(20) => "Last name must be at most 20 characters long!"
+
+        //pattern("[A-Z][a-z]*") => "Last name must begin with a capital letter!"
+        pattern("[A-Z][a-z]*") => "Last name (%value%) must begin with a capital letter!"   // BŐVÍTMÉNY
+
+        required => "Last name is mandatory!"
+
+        neq(fname) => "Last name and first name must be different!"
+    }
+
+    input number height "Height (mm)"
+    {
+        min(500) => "Height must be at least 500 mm!"
+        max(2500) => "Height must be at most 2500 mm!"
+        step(5) => "Millimeter can only be given in steps of 5!"
+    }
+
+    input checkbox hascar "Has car?"
+    {
+        on? show validlicense
+    }
+
+    hidden input checkbox validlicense "Valid license?"
+    {
+        on? show license
+    }
+
+    hidden group license
+    {
+        input date licenseexam "Date of license exam"
+        {
+            min(1920-01-01) => "Minimum date must be greater than '1920-01-01'!"
+            max(2023-10-26) => "Maximum date must be less than '2023-10-26'!"
+        }
+
+        input date licensevalidity "Validity of license"
+        {
+            min(1920-01-01) => "Minimum date must be greater than '1920-01-01'!"
+            max(2027-10-26) => "Maximum date must be less than '2027-10-26'!"
+
+            gt(licenseexam) => "License validity date must be greater than license exam date!"
+        }
+    }
+end

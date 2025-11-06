@@ -1,0 +1,35 @@
+webtest example.FormTest
+
+page FormPage
+  set fname to input "fname"
+  set lname to input "lname"
+  set submit to input "Submit"
+end
+
+open "file://E:/webtest/PersonForm.html"
+wait 1 seconds
+
+context as FormPage
+  fill fname with "A"
+  fill lname with "B"
+  click submit
+  wait 1 seconds
+  assert label "First name must be at least 3 characters long" exists
+  assert label "Last name must be at least 3 characters long" exists
+
+  fill fname with "john"
+  fill lname with "smith"
+  click submit
+  wait 1 seconds
+  assert not label "First name must be at least 3 characters long" exists
+  assert not label "Last name must be at least 3 characters long" exists
+  assert label "First name must begin with a capital letter" exists
+  assert label "Last name must begin with a capital letter" exists
+
+  fill fname with "John"
+  fill lname with "Smith"
+  click submit
+  wait 1 seconds
+  assert not label "First name must begin with a capital letter" exists
+  assert not label "Last name must begin with a capital letter" exists
+end

@@ -1,0 +1,8 @@
+FORM=1
+END=2
+ID=3
+COMMENT=4
+LINE_COMMENT=5
+WS=6
+'form'=1
+'end'=2
